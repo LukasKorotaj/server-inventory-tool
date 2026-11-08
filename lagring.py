@@ -6,7 +6,7 @@
 # "miljo": ("dev" OR "test" OR "prod"),
 # "roll": str,
 # "status": ("UP" OR "DOWN" OR default="UNKNOWN"),
-# "senast_kontrollerad": datetime
+# "senast_kontrollerad": str(datetime)
 #
 # If users imputs invalid "miljo" or "namn" already exists
 # the program should prompt the user again.
@@ -23,3 +23,24 @@
 # "inventering_YYYY-MM-DD_HHmm.csv". The directory
 # shall be made if one does not exist. I'm pretty sure
 # that the default behaviour is overwrite so lets just keep that.
+
+
+import json
+import os
+from pathlib import Path
+
+
+def parse_servers_json():
+    """Parses the server .json file as a dict."""
+    server_data = ""
+    file_path = Path(os.environ.get("INVENTORY_DATAFIL", "./servrar.json"))
+
+    if not file_path.exists():
+        # I assume here that the directories exist
+        file_path.write_text("", encoding="utf-8")
+
+    with open(file_path, mode="r", encoding="utf-8") as src:
+        server_data = src.read()
+
+    # Returns the json file as a list of key value pairs
+    return json.loads(server_data)

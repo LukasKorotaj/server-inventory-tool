@@ -60,3 +60,23 @@ def test_environment_variable_read(monkeypatch, tmp_path):
 
     result = lg.parse_servers_json()
     assert result == working_server_data
+
+test_server_for_add = {
+    "namn": "dev01",
+    "adress": "localhost",
+    "miljo": "dev",
+    "roll": "utvecklingsserver",
+    "status": "Unknown",
+    "senast_kontrollerad": "",
+}
+
+def test_add_server(monkeypatch, tmp_path):
+    """Test if the server is added correctly"""
+    # I do not need to mock_open because
+    # we create a temp file
+    file = tmp_path / "test_server.json"
+    monkeypatch.setenv("INVENTORY_DATAFIL", str(file))
+
+    lg.add_server("dev01", "localhost", "dev", "utvecklingsserver")
+    result = lg.parse_servers_json()
+    assert result == test_server_for_add

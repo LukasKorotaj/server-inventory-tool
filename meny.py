@@ -34,6 +34,8 @@
 # If users imputs invalid "miljo" or "namn" already exists
 # the program should prompt the user again.
 
+import lagring as lg
+
 welcome_string = """
 #########################
 # Server_Inventory_Tool #
@@ -42,11 +44,33 @@ welcome_string = """
 
 
 def visa_alla():
-    pass
+    servers = lg.parse_servers_json()
+    format_servers(servers)
 
 
 def visa_miljo():
-    pass
+    servers = lg.parse_servers_json()
+
+    # I am populating a set of valid
+    # miljos so that i do not need to
+    # parse the file each time
+    miljo_set = set()
+    for s in servers:
+        if s["miljo"] not in miljo_set:
+            miljo_set.add(s["miljo"])
+
+    while True:
+        user_input = input("Skriv miljo du vill kolla upp: ")
+        if user_input in miljo_set:
+            break
+        print("Miljon finns inte. Forsok igen.")
+
+    miljo_servers = []
+    for s in servers:
+        if s["miljo"] is user_input:
+            miljo_servers.append(s)
+
+    format_servers(miljo_servers)
 
 
 def lagg_till():

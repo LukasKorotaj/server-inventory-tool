@@ -1,9 +1,8 @@
 import json
-import unittest
+from datetime import datetime
 from unittest import mock
 
 import pytest
-from _pytest.tmpdir import tmp_path
 
 import lagring as lg
 
@@ -61,6 +60,7 @@ def test_environment_variable_read(monkeypatch, tmp_path):
     result = lg.parse_servers_json()
     assert result == working_server_data
 
+
 test_server_for_add = {
     "namn": "dev01",
     "adress": "localhost",
@@ -69,6 +69,7 @@ test_server_for_add = {
     "status": "Unknown",
     "senast_kontrollerad": "",
 }
+
 
 def test_add_server(monkeypatch, tmp_path):
     """Test if the server is added correctly"""
@@ -80,3 +81,28 @@ def test_add_server(monkeypatch, tmp_path):
     lg.add_server("dev01", "localhost", "dev", "utvecklingsserver")
     result = lg.parse_servers_json()
     assert result == test_server_for_add
+
+
+@pytest.fixture
+def up_down():
+    return ["UP", "DOWN"]
+
+
+# Global test_time
+test_time = datetime.strptime("20-04-1969 13:37", "%d-%m-%Y %H:%M").strftime(
+    "%d-%m-%Y %H:%M"
+)
+
+
+def test_update_server_status(up_down, monkeypatch, tmp_path):
+    file = tmp_path / "test_server.json"
+    monkeypatch.setenv("INVENTORY_DATAFIL", str(file))
+    file.write_text(json.dumps(working_server_data), "utf-8")
+
+    monkeypatch.setattr(lg, "get_current_time", lambda: test_time)
+    lg.update_server_status("web01", up_down)
+
+    target_server = lg.get_server("web01")
+
+    assert target_server["status"] == up_down
+    assert target_server["senast_kontrollerad"] == lg.get_current_time()

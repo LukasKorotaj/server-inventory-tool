@@ -30,6 +30,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 
+
 def get_file():
     """Returns the .json file path and creates it if it
     doesn't exist.
@@ -42,9 +43,10 @@ def get_file():
 
     return file_path
 
-def parse_servers_json():
+
+def parse_servers_json() -> list:
     """Parses the server .json file as a dict."""
-    server_data = ""
+    server_data = []
 
     file_path = get_file()
 
@@ -57,7 +59,8 @@ def parse_servers_json():
 
 def get_current_time():
     """Returns string of the current date and time in
-    the right format.
+    the right format. Accepts a `datetime` argument, but
+    this is mostly for testing purposes.
     """
     current_time = datetime.now()
     # Hard to test, so I did it in ipython
@@ -80,3 +83,32 @@ def add_server(namn: str, adress: str, miljo: str, roll: str):
 
     with open(file_path, mode="w", encoding="utf-8") as target:
         json.dump(server, target)
+
+
+def get_server(namn, servers: list | None = None) -> dict:
+    # Find the server
+    # NOTE: I was playing around with
+    # server indexes before but it seems
+    # that its not necessary
+    if servers is None:
+        servers = parse_servers_json()
+
+    for server in servers:
+        if server.get("namn") == namn:
+            return server
+
+    # Raises RuntimeError as this should not be possible
+    raise RuntimeError("Unreachable state.")
+
+def update_server_status(namn, status):
+    """Updates server status. Function does not check
+    for input validity."""
+    servers = parse_servers_json()
+
+    target_server = get_server(namn, servers)
+
+    target_server["status"] = status
+    target_server["senast_kontrollerad"] = get_current_time()
+
+    with open(file=get_file(), mode="w", encoding="utf-8") as target:
+        json.dump(servers, target)

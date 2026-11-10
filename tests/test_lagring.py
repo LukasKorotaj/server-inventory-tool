@@ -1,45 +1,10 @@
 import json
-from datetime import datetime
 from unittest import mock
 
 import pytest
+from test_setup import *
 
 import lagring as lg
-
-working_server_data = [
-    {
-        "namn": "web01",
-        "adress": "example.com",
-        "miljo": "prod",
-        "roll": "webbserver",
-        "status": "unknown",
-        "senast_kontrollerad": "",
-    },
-    {
-        "namn": "db01",
-        "adress": "127.0.0.1",
-        "miljo": "prod",
-        "roll": "databas",
-        "status": "unknown",
-        "senast_kontrollerad": "",
-    },
-    {
-        "namn": "test01",
-        "adress": "192.0.2.10",
-        "miljo": "test",
-        "roll": "testserver",
-        "status": "unknown",
-        "senast_kontrollerad": "",
-    },
-    {
-        "namn": "dev01",
-        "adress": "localhost",
-        "miljo": "dev",
-        "roll": "utvecklingsserver",
-        "status": "unknown",
-        "senast_kontrollerad": "",
-    },
-]
 
 
 def test_file_exist(monkeypatch):
@@ -86,12 +51,6 @@ def test_add_server(monkeypatch, tmp_path):
 @pytest.fixture
 def up_down():
     return ["UP", "DOWN"]
-
-
-# Global test_time
-test_time = datetime.strptime("20-04-1969 13:37", "%d-%m-%Y %H:%M").strftime(
-    "%d-%m-%Y %H:%M"
-)
 
 
 def test_update_server_status(up_down, monkeypatch, tmp_path):

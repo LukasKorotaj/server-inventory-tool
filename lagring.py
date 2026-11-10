@@ -100,6 +100,7 @@ def get_server(namn, servers: list | None = None) -> dict:
     # Raises RuntimeError as this should not be possible
     raise RuntimeError("Unreachable state.")
 
+
 def update_server_status(namn, status):
     """Updates server status. Function does not check
     for input validity."""

@@ -25,6 +25,7 @@
 # that the default behaviour is overwrite so lets just keep that.
 
 
+import csv
 import json
 import os
 from datetime import datetime
@@ -57,14 +58,16 @@ def parse_servers_json() -> list:
     return json.loads(server_data)
 
 
-def get_current_time():
-    """Returns string of the current date and time in
-    the right format. Accepts a `datetime` argument, but
-    this is mostly for testing purposes.
+def get_current_time(csv_format: bool = False):
+    """Returns string of the current date and time
+    formatted for the json server file (default) or csv export.
     """
     current_time = datetime.now()
     # Hard to test, so I did it in ipython
-    return current_time.strftime("%d-%m-%Y %H:%M")
+    if csv_format:
+        return current_time.strftime("%Y-%m-%d_%H%M")
+    else:
+        return current_time.strftime("%d-%m-%Y %H:%M")
 
 
 def add_server(namn: str, adress: str, miljo: str, roll: str):
@@ -113,3 +116,32 @@ def update_server_status(namn, status):
 
     with open(file=get_file(), mode="w", encoding="utf-8") as target:
         json.dump(servers, target)
+
+
+def export_csv():
+    servers = parse_servers_json()
+    file_name = f"inventering_{get_current_time(csv_format=True)}.csv"
+
+    # Mkdir only makes the dir if it does not exist and does nothing if
+    # it does.
+    try:
+        Path("./rapporter").mkdir(exist_ok=True)
+    except FileExistsError:
+        print(
+            "Rapporter exists as a file. This is not allowed. Move or delete the file."
+        )
+
+    with open(f"./rapporter/{file_name}", mode="w", encoding="utf-8") as target:
+        writer = csv.DictWriter(
+            target,
+            fieldnames=[
+                "namn",
+                "adress",
+                "miljo",
+                "roll",
+                "status",
+                "senast_kontrollerad",
+            ],
+        )
+        writer.writeheader()
+        writer.writerows(servers)

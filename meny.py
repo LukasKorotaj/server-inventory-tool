@@ -54,14 +54,15 @@ def visa_miljo():
     # I am populating a set of valid
     # miljos so that i do not need to
     # parse the file each time
-    miljo_set = set()
-    for s in servers:
-        if s["miljo"] not in miljo_set:
-            miljo_set.add(s["miljo"])
+    possible_miljo = ("dev", "test", "prod")
 
     while True:
-        user_input = input("Skriv miljo du vill kolla upp: ")
-        if user_input in miljo_set:
+        user_input = input(
+            "Skriv miljo du vill kolla upp ('dev', 'test', 'prod' eller 'q' för att avbryta): "
+        )
+        if user_input.lower().strip() == "q":
+            return
+        if user_input in possible_miljo:
             break
         print("Miljon finns inte. Forsok igen.")
 
@@ -74,7 +75,52 @@ def visa_miljo():
 
 
 def lagg_till():
-    pass
+    servers = lg.parse_servers_json()
+
+    existing_names = []
+    for s in servers:
+        existing_names.append(s["namn"])
+
+    valid_miljo = ("dev", "test", "prod")
+
+    # Added this just so that i don't have to write it all the time
+    qquit = lambda n: n.lower().strip() == "q"
+
+    while True:
+        new_name = input("Skriv namn till den nya servern ('q' for att avbryta): ")
+
+        if qquit(new_name):
+            return
+
+        if new_name in existing_names:
+            print("Den har servern finns redan!")
+            continue
+
+        break
+
+    while True:
+        new_miljo = input(
+            "Vilken miljo ska den nya servern tillhora till? ('dev', 'test', 'prod' eller 'q' for att avbryta)."
+        )
+
+        if qquit(new_miljo):
+            return
+
+        if new_miljo.lower().strip() not in valid_miljo:
+            print("Felaktig miljo!")
+            continue
+
+        break
+
+    new_adress = input("Skriv adressen: ('q' for att avbryta)").lower().strip()
+    if qquit(new_adress):
+        return
+
+    new_roll = input("Skriv rollen: ('q' for att avbryta)").lower().strip()
+    if qquit(new_roll):
+        return
+
+    lg.add_server(new_name, new_adress, new_miljo, new_roll)
 
 
 def ta_bort():
@@ -119,21 +165,27 @@ def format_servers(servers):
         print(f"{fstring(s['namn'])}{fstring(s['adress'])}{fstring(s['status'])}")
 
 
-def handle_input():
-    """Waits for user input and handles incorrect input.
-    Also ties the menu number to its function."""
+def menu_loop():
+    """Main menu loop. Handles calling the functions."""
+    print(welcome_string)
     while True:
+        draw_menu()
         try:
-            user_input = int(input("Skriv kommandonummer: "))
-            if 1 <= user_input <= option_function.__len__():
-                break
-            print("Kommando finns inte")
+            user_input = input("Skriv kommandonummer: ")
+            if user_input.lower().strip() == "q":
+                return
+            else:
+                user_input = int(user_input)
+            if 1 >= user_input >= option_function.__len__():
+                print("Kommando finns inte")
+                continue
+
+            print(f"Du valde {user_input}.")
+            # I need to call it like this. Now I know.
+            option_function[user_input - 1][1]()
 
         except ValueError:
-            print("Ogiltig input. Försök igen")
-
-    print(f"Du valde {user_input}.")
-    option_function[user_input - 1][1]
+            print("Ogiltig input. Forsok igen")
 
 
 def draw_menu():
@@ -142,3 +194,6 @@ def draw_menu():
     entry_number = 1
     for option in option_function:
         print(f"{entry_number}. {option[0]}")
+        entry_number += 1
+
+    print("\n")

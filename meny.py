@@ -67,7 +67,7 @@ def visa_miljo():
 
     miljo_servers = []
     for s in servers:
-        if s["miljo"] is user_input:
+        if s["miljo"] == user_input:
             miljo_servers.append(s)
 
     format_servers(miljo_servers)

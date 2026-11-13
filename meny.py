@@ -34,6 +34,7 @@
 # If users imputs invalid "miljo" or "namn" already exists
 # the program should prompt the user again.
 
+from kontroller import check_server_status
 import lagring as lg
 
 welcome_string = """
@@ -159,7 +160,31 @@ def ta_bort():
 
 
 def kontrollera_en():
-    pass
+    servers = lg.parse_servers_json()
+
+    ser_names = []
+    for s in servers:
+        ser_names.append(s["namn"])
+
+    while True:
+        k_server = input("Vilken server vill du kontrollera? ('q' avbryt): ")
+        if qquit(k_server):
+            return
+
+        k_server = k_server.lower().strip()
+
+        if k_server not in ser_names:
+            print(f"{k_server} finns inte!")
+            continue
+
+        break
+
+    check_server_status(k_server)
+
+    print(f"{'NAMN':<15}{'ADRESS':<15}{'STATUS':<15}")
+    print(45 * "-")  # lol
+    format_server(lg.get_server(k_server))
+    
 
 
 def kontrollera_alla():
@@ -185,15 +210,19 @@ option_function = [
     ["Avsluta", avsluta],
 ]
 
+def format_server(s):
+    fstring = lambda s: f"{s[:12]}..." if len(s) > 15 else f"{s:<15}"
+
+    print(f"{fstring(s['namn'])}{fstring(s['adress'])}{fstring(s['status'])}")
+
 
 def format_servers(servers):
     print(f"{'NAMN':<15}{'ADRESS':<15}{'STATUS':<15}")
     print(45 * "-")  # lol
 
-    fstring = lambda s: f"{s[:12]}..." if len(s) > 15 else f"{s:<15}"
-
     for s in servers:
-        print(f"{fstring(s['namn'])}{fstring(s['adress'])}{fstring(s['status'])}")
+        format_server(s)
+
 
 
 def menu_loop():

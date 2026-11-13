@@ -88,6 +88,8 @@ def lagg_till():
 
     while True:
         new_name = input("Skriv namn till den nya servern ('q' for att avbryta): ")
+        # I don't want any problems
+        new_name.lower().strip()
 
         if qquit(new_name):
             return
@@ -100,7 +102,8 @@ def lagg_till():
 
     while True:
         new_miljo = input(
-            "Vilken miljo ska den nya servern tillhora till? ('dev', 'test', 'prod' eller 'q' for att avbryta)."
+            """Vilken miljo ska den nya servern tillhora till?
+    ('dev', 'test', 'prod' eller 'q' for att avbryta): """
         )
 
         if qquit(new_miljo):
@@ -112,11 +115,11 @@ def lagg_till():
 
         break
 
-    new_adress = input("Skriv adressen: ('q' for att avbryta)").lower().strip()
+    new_adress = input("Skriv adressen: ('q' for att avbryta): ").lower().strip()
     if qquit(new_adress):
         return
 
-    new_roll = input("Skriv rollen: ('q' for att avbryta)").lower().strip()
+    new_roll = input("Skriv rollen: ('q' for att avbryta): ").lower().strip()
     if qquit(new_roll):
         return
 
@@ -201,6 +204,7 @@ def format_servers(servers):
 def menu_loop():
     """Main menu loop. Handles calling the functions."""
     print(welcome_string)
+
     while True:
         draw_menu()
         try:
@@ -209,7 +213,8 @@ def menu_loop():
                 return
             else:
                 user_input = int(user_input)
-            if 1 >= user_input >= option_function.__len__():
+
+            if 1 > user_input > option_function.__len__():
                 print("Kommando finns inte")
                 continue
 

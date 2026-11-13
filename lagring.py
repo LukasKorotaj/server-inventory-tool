@@ -73,6 +73,8 @@ def get_current_time(csv_format: bool = False):
 def add_server(namn: str, adress: str, miljo: str, roll: str):
     """Adds server to the .json server file.
     Function does not check for input validity."""
+    servers = parse_servers_json()
+
     server = {
         "namn": namn,
         "adress": adress,
@@ -82,10 +84,12 @@ def add_server(namn: str, adress: str, miljo: str, roll: str):
         "senast_kontrollerad": "",
     }
 
+    servers.append(server)
+
     file_path = get_file()
 
     with open(file_path, mode="w", encoding="utf-8") as target:
-        json.dump(server, target)
+        json.dump(servers, target)
 
 
 def get_server(namn, servers: list | None = None) -> dict:

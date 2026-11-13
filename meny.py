@@ -124,7 +124,40 @@ def lagg_till():
 
 
 def ta_bort():
-    pass
+    servers = lg.parse_servers_json()
+
+    ser_names = []
+    for s in servers:
+        ser_names = s.append(s["namn"])
+
+    while True:
+        to_del = input("Vilken server vill du ta bort?: ")
+        to_del = to_del.lower().strip()
+
+        if to_del not in ser_names:
+            print(f"{to_del} finns inte!")
+            continue
+
+        confirm = input(f'Vill du verkligen ta bort "{to_del}"? (y/N)')
+
+        if confirm.lower().strip() != "y":
+            print("Stoppar raderingen.")
+            return
+
+        break
+
+    server_to_del = None
+    for s in servers:
+        if s["namn"] == to_del:
+            server_to_del = s
+            break
+
+    if server_to_del is None:
+        raise RuntimeError(
+            "Error in ta_bort() function. This state should not be possible."
+        )
+
+    lg.remove_server(server_to_del)
 
 
 def kontrollera_en():

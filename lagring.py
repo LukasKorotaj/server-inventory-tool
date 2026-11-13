@@ -153,17 +153,7 @@ def export_csv():
 
 def remove_server(to_del):
     servers = parse_servers_json()
-
-    server_to_del = None
-    for s in servers:
-        if s["namn"] == to_del:
-            server_to_del = s
-            break
-
-    if server_to_del is None:
-        raise RuntimeError(
-            "Error in ta_bort() function. This state should not be possible."
-        )
+    server_to_del = get_server(to_del)
 
     servers.remove(server_to_del)
 

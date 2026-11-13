@@ -151,10 +151,21 @@ def export_csv():
         writer.writerows(servers)
 
 
-def remove_server(server_to_del):
+def remove_server(to_del):
     servers = parse_servers_json()
 
-    new_servers = servers.remove(server_to_del)
+    server_to_del = None
+    for s in servers:
+        if s["namn"] == to_del:
+            server_to_del = s
+            break
+
+    if server_to_del is None:
+        raise RuntimeError(
+            "Error in ta_bort() function. This state should not be possible."
+        )
+
+    servers.remove(server_to_del)
 
     with open(file=get_file(), mode="w", encoding="utf-8") as target:
-        json.dump(new_servers, target)
+        json.dump(servers, target)

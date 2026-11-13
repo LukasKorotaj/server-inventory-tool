@@ -131,7 +131,7 @@ def ta_bort():
 
     ser_names = []
     for s in servers:
-        ser_names = s.append(s["namn"])
+        ser_names.append(s["namn"])
 
     while True:
         to_del = input("Vilken server vill du ta bort?: ")
@@ -149,18 +149,7 @@ def ta_bort():
 
         break
 
-    server_to_del = None
-    for s in servers:
-        if s["namn"] == to_del:
-            server_to_del = s
-            break
-
-    if server_to_del is None:
-        raise RuntimeError(
-            "Error in ta_bort() function. This state should not be possible."
-        )
-
-    lg.remove_server(server_to_del)
+    lg.remove_server(to_del)
 
 
 def kontrollera_en():
@@ -214,7 +203,7 @@ def menu_loop():
             else:
                 user_input = int(user_input)
 
-            if 1 > user_input > option_function.__len__():
+            if (user_input < 1) or (user_input > len(option_function)):
                 print("Kommando finns inte")
                 continue
 

@@ -48,6 +48,10 @@ def visa_alla():
     format_servers(servers)
 
 
+def qquit(n) -> bool:
+    return n.lower().strip() == "q"
+
+
 def visa_miljo():
     servers = lg.parse_servers_json()
 
@@ -60,7 +64,7 @@ def visa_miljo():
         user_input = input(
             "Skriv miljo du vill kolla upp ('dev', 'test', 'prod' eller 'q' för att avbryta): "
         )
-        if user_input.lower().strip() == "q":
+        if qquit(user_input):
             return
         if user_input in possible_miljo:
             break
@@ -84,7 +88,6 @@ def lagg_till():
     valid_miljo = ("dev", "test", "prod")
 
     # Added this just so that i don't have to write it all the time
-    qquit = lambda n: n.lower().strip() == "q"
 
     while True:
         new_name = input("Skriv namn till den nya servern ('q' for att avbryta): ")
@@ -134,7 +137,10 @@ def ta_bort():
         ser_names.append(s["namn"])
 
     while True:
-        to_del = input("Vilken server vill du ta bort?: ")
+        to_del = input("Vilken server vill du ta bort? ('q' for att avbryta): ")
+        if qquit(to_del):
+            return
+
         to_del = to_del.lower().strip()
 
         if to_del not in ser_names:
@@ -198,7 +204,7 @@ def menu_loop():
         draw_menu()
         try:
             user_input = input("Skriv kommandonummer: ")
-            if user_input.lower().strip() == "q":
+            if qquit(user_input):
                 return
             else:
                 user_input = int(user_input)

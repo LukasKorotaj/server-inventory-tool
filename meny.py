@@ -34,8 +34,8 @@
 # If users imputs invalid "miljo" or "namn" already exists
 # the program should prompt the user again.
 
-from kontroller import check_server_status
 import lagring as lg
+from kontroller import check_server_status
 
 welcome_string = """
 #########################
@@ -181,10 +181,10 @@ def kontrollera_en():
 
     check_server_status(k_server)
 
+    print("\n\n\n")  # A little space
     print(f"{'NAMN':<15}{'ADRESS':<15}{'STATUS':<15}")
     print(45 * "-")  # lol
     format_server(lg.get_server(k_server))
-    
 
 
 def kontrollera_alla():
@@ -210,6 +210,7 @@ option_function = [
     ["Avsluta", avsluta],
 ]
 
+
 def format_server(s):
     fstring = lambda s: f"{s[:12]}..." if len(s) > 15 else f"{s:<15}"
 
@@ -224,12 +225,12 @@ def format_servers(servers):
         format_server(s)
 
 
-
 def menu_loop():
     """Main menu loop. Handles calling the functions."""
     print(welcome_string)
 
     while True:
+        print("\n\n\n")  # Put this to make it a bit easier to see
         draw_menu()
         try:
             user_input = input("Skriv kommandonummer: ")

@@ -30,7 +30,12 @@ def check_server_status(namn):
     # when packet loss is 100%.
     # Note the 'W' here (upper). lower 'w' can block
     # the last ping giving exit code 1
-    command_output = subprocess.run(["ping", "-W", "1", "-c", "2", adress], check=False)
+    command_output = subprocess.run(
+        ["ping", "-W", "1", "-c", "2", adress],
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
     match command_output.returncode:
         case 0:

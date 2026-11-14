@@ -95,7 +95,7 @@ def lagg_till():
     while True:
         new_name = input("Skriv namn till den nya servern ('q' for att avbryta): ")
         # I don't want any problems
-        new_name.lower().strip()
+        new_name = new_name.lower().strip()
 
         if qquit(new_name):
             return

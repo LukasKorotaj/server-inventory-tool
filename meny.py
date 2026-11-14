@@ -34,6 +34,8 @@
 # If users imputs invalid "miljo" or "namn" already exists
 # the program should prompt the user again.
 
+import sys
+
 import lagring as lg
 from kontroller import check_server_status
 
@@ -188,15 +190,23 @@ def kontrollera_en():
 
 
 def kontrollera_alla():
-    pass
+    servers = lg.parse_servers_json()
+    for s in servers:
+        check_server_status(s["namn"])
+
+    # It updated
+    servers = lg.parse_servers_json()
+
+    print("\n\n\n")
+    format_servers(servers)
 
 
 def exportera_som_csv():
-    pass
+    lg.export_csv()
 
 
 def avsluta():
-    pass
+    sys.exit(0)
 
 
 option_function = [

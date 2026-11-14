@@ -134,6 +134,7 @@ def export_csv():
         print(
             "Rapporter exists as a file. This is not allowed. Move or delete the file."
         )
+        return 2
 
     with open(f"./rapporter/{file_name}", mode="w", encoding="utf-8") as target:
         writer = csv.DictWriter(
@@ -152,6 +153,8 @@ def export_csv():
 
     print("\n\n\n")
     print(f"Rapporten finns i ./rapporter/{file_name}")
+
+    return 0
 
 
 def remove_server(to_del):

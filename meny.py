@@ -49,13 +49,14 @@ welcome_string = """
 def visa_alla():
     servers = lg.parse_servers_json()
     format_servers(servers)
+    return 0
 
 
 def qquit(n) -> bool:
     return n.lower().strip() == "q"
 
 
-def visa_miljo():
+def visa_miljo(env=None):
     servers = lg.parse_servers_json()
 
     # I am populating a set of valid
@@ -63,19 +64,21 @@ def visa_miljo():
     # parse the file each time
     possible_miljo = ("dev", "test", "prod")
 
-    while True:
-        user_input = input(
-            "Skriv miljo du vill kolla upp ('dev', 'test', 'prod' eller 'q' för att avbryta): "
-        )
-        if qquit(user_input):
-            return
-        if user_input in possible_miljo:
-            break
-        print("Miljon finns inte. Forsok igen.")
+    if env is None:
+        while True:
+            env = input(
+                "Skriv miljo du vill kolla upp ('dev', 'test', 'prod' eller 'q' för att avbryta): "
+            )
+            if qquit(env):
+                return
+            if env in possible_miljo:
+                break
+            print("Miljon finns inte. Forsok igen.")
+            return 1
 
     miljo_servers = []
     for s in servers:
-        if s["miljo"] == user_input:
+        if s["miljo"] == env:
             miljo_servers.append(s)
 
     format_servers(miljo_servers)
@@ -161,44 +164,53 @@ def ta_bort():
     lg.remove_server(to_del)
 
 
-def kontrollera_en():
+def kontrollera_en(k_server=None):
     servers = lg.parse_servers_json()
 
-    ser_names = []
-    for s in servers:
-        ser_names.append(s["namn"])
+    if k_server is None:
+        ser_names = []
+        for s in servers:
+            ser_names.append(s["namn"])
 
-    while True:
-        k_server = input("Vilken server vill du kontrollera? ('q' avbryt): ")
-        if qquit(k_server):
-            return
+        while True:
+            k_server = input("Vilken server vill du kontrollera? ('q' avbryt): ")
+            if qquit(k_server):
+                return
 
-        k_server = k_server.lower().strip()
+            k_server = k_server.lower().strip()
 
-        if k_server not in ser_names:
-            print(f"{k_server} finns inte!")
-            continue
+            if k_server not in ser_names:
+                print(f"{k_server} finns inte!")
+                continue
 
-        break
+            break
 
-    check_server_status(k_server)
+    exit_code = check_server_status(k_server)
 
     print("\n\n\n")  # A little space
     print(f"{'NAMN':<15}{'ADRESS':<15}{'STATUS':<15}")
     print(45 * "-")  # lol
     format_server(lg.get_server(k_server))
 
+    return exit_code
+
 
 def kontrollera_alla():
+    return_codes = set()
     servers = lg.parse_servers_json()
     for s in servers:
-        check_server_status(s["namn"])
+        return_codes.add(check_server_status(s["namn"]))
 
     # It updated
     servers = lg.parse_servers_json()
 
     print("\n\n\n")
     format_servers(servers)
+
+    if (1 or 2) in return_codes:
+        return 1
+
+    return 0
 
 
 def exportera_som_csv():
@@ -233,6 +245,8 @@ def format_servers(servers):
 
     for s in servers:
         format_server(s)
+
+    return 0
 
 
 def menu_loop():

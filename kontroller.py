@@ -47,6 +47,8 @@ def check_server_status(namn):
 
     lg.update_server_status(namn, status=return_status)
 
+    return command_output.returncode
+
     # NOTE: I was thinking about capturing the final ping time
     # so that the timestamp is extra accurate but since i am only
     # capturing up to the minute it would just be useless code

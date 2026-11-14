@@ -150,6 +150,9 @@ def export_csv():
         writer.writeheader()
         writer.writerows(servers)
 
+    print("\n\n\n")
+    print(f"Rapporten finns i ./rapporter/{file_name}")
+
 
 def remove_server(to_del):
     servers = parse_servers_json()

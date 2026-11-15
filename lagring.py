@@ -40,7 +40,7 @@ def get_file():
 
     if not file_path.exists():
         # I assume here that the directories exist
-        file_path.write_text("", encoding="utf-8")
+        file_path.write_text("[]", encoding="utf-8")
 
     return file_path
 

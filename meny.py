@@ -141,9 +141,9 @@ def lagg_till():
 def ta_bort():
     servers = lg.parse_servers_json()
 
-    ser_names = []
+    ser_names = {}
     for s in servers:
-        ser_names.append((s["namn"], s["miljo"]))
+        ser_names[s["namn"]] = s["miljo"]
 
     while True:
         to_del = input("Vilken server vill du ta bort? ('q' for att avbryta): ")
@@ -152,13 +152,13 @@ def ta_bort():
 
         to_del = to_del.lower().strip()
 
-        if to_del not in ser_names[0]:
+        if to_del not in ser_names:
             print(f"{to_del} finns inte!")
             continue
 
         # Checks if to_del is "prod" in
         # which case asks for confirmatin
-        if (to_del, "prod") in ser_names:
+        if ser_names[to_del] == "prod":
             confirm = input(f'Vill du verkligen ta bort "{to_del}"? (y/N)')
 
             if confirm.lower().strip() != "y":

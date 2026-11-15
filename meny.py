@@ -109,10 +109,14 @@ def lagg_till():
         break
 
     while True:
-        new_miljo = input(
-            """Vilken miljo ska den nya servern tillhora till?
+        new_miljo = (
+            input(
+                """Vilken miljo ska den nya servern tillhora till?
     ('dev', 'test', 'prod' eller 'q' for att avbryta): """
-        ).lower().strip()
+            )
+            .lower()
+            .strip()
+        )
 
         if qquit(new_miljo):
             return
@@ -152,7 +156,7 @@ def ta_bort():
             print(f"{to_del} finns inte!")
             continue
 
-        # Checks if to_del is "prod" in 
+        # Checks if to_del is "prod" in
         # which case asks for confirmatin
         if (to_del, "prod") in ser_names:
             confirm = input(f'Vill du verkligen ta bort "{to_del}"? (y/N)')
@@ -209,7 +213,12 @@ def kontrollera_alla():
     print("\n\n\n")
     format_servers(servers)
 
-    if (1 or 2) in return_codes:
+    # & operator makes an intersection
+    # This works because all non empty
+    # sets evaluate to True and all empty
+    # to False. Which is funny but i guess
+    # it makes sense.
+    if return_codes & {1, 2}:
         return 1
 
     return 0

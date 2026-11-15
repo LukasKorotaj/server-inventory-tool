@@ -74,7 +74,6 @@ def visa_miljo(env=None):
             if env in possible_miljo:
                 break
             print("Miljon finns inte. Forsok igen.")
-            return 1
 
     miljo_servers = []
     for s in servers:

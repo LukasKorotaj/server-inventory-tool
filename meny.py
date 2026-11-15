@@ -113,12 +113,12 @@ def lagg_till():
         new_miljo = input(
             """Vilken miljo ska den nya servern tillhora till?
     ('dev', 'test', 'prod' eller 'q' for att avbryta): """
-        )
+        ).lower().strip()
 
         if qquit(new_miljo):
             return
 
-        if new_miljo.lower().strip() not in valid_miljo:
+        if new_miljo not in valid_miljo:
             print("Felaktig miljo!")
             continue
 

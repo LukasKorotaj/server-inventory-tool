@@ -127,3 +127,21 @@ Allting testas inte. Jag ville mest prova hur man anväder `pytest`.
 ```bash
 python -m pytest
 ```
+
+## Användning av AI
+Alla `.py` filer är helt skrivna av mig. Under projektets 
+gång så användes Gemini i browsern för att hjälpa till 
+med vad parametrar i funktionerna gör. Det är mest för att 
+jag tycker att det är enklare än att gå igenom pythons officiella 
+dokumentation. Samt så tycker jag att LSP gör det för svårt att lista 
+ut vad parametrarna gör medans man skriver. Om någonting jag skrev 
+kändes fel så dubbelkollade jag med Gemini.
+
+Vid slutet så användes Deepseek 4.1 via opencode för att läsa igenom 
+projektet ifall jag missade någon bug. Den också jämförde projektet 
+mot krav i instruktionerna. Till exempel så missade jag att man inte 
+ska fråga om användaren är säker om man tar bort en server som inte 
+är `prod`.
+
+Deepseek också skrev en skelett till `README.md`. Dock "Användning av AI" 
+är 100% skriven av mig.

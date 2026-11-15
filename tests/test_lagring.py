@@ -45,7 +45,7 @@ def test_add_server(monkeypatch, tmp_path):
 
     lg.add_server("dev01", "localhost", "dev", "utvecklingsserver")
     result = lg.parse_servers_json()
-    assert result == test_server_for_add
+    assert result == [test_server_for_add]
 
 
 @pytest.fixture
@@ -62,6 +62,7 @@ def test_update_server_status(up_down, monkeypatch, tmp_path):
     lg.update_server_status("web01", up_down)
 
     target_server = lg.get_server("web01")
+    assert target_server is not None
 
     assert target_server["status"] == up_down
     assert target_server["senast_kontrollerad"] == lg.get_current_time()

@@ -192,6 +192,9 @@ def kontrollera_en(k_server=None):
             break
 
     exit_code = check_server_status(k_server)
+    if exit_code is None:
+        print("Servern finns inte.")
+        return 1
 
     print("\n\n\n")  # A little space
     print(f"{'NAMN':<15}{'ADRESS':<15}{'STATUS':<15}")

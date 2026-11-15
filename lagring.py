@@ -92,7 +92,7 @@ def add_server(namn: str, adress: str, miljo: str, roll: str):
         json.dump(servers, target)
 
 
-def get_server(namn, servers: list | None = None) -> dict:
+def get_server(namn, servers: list | None = None) -> dict | None:
     # Find the server
     # NOTE: I was playing around with
     # server indexes before but it seems
@@ -105,7 +105,7 @@ def get_server(namn, servers: list | None = None) -> dict:
             return server
 
     # Raises RuntimeError as this should not be possible
-    raise RuntimeError("Unreachable state.")
+    return None
 
 
 def update_server_status(namn, status):
@@ -114,6 +114,8 @@ def update_server_status(namn, status):
     servers = parse_servers_json()
 
     target_server = get_server(namn, servers)
+    if target_server is None:
+        raise ValueError(f"Servern {namn} finns inte")
 
     target_server["status"] = status
     target_server["senast_kontrollerad"] = get_current_time()

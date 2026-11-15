@@ -14,13 +14,13 @@ import subprocess
 import lagring as lg
 
 
-def get_server_adress(namn):
-    return lg.get_server(namn)["adress"]
-
-
 def check_server_status(namn):
     """Check status of server and update INVENTORY_DATAFIL."""
-    adress = get_server_adress(namn)
+    server = lg.get_server(namn)
+    if server is None:
+        return None
+
+    adress = server["adress"]
 
     # runs: ping -c 3 {server_adress}
     # Explicit check (LSP crying)

@@ -20,4 +20,6 @@ def test_check_server_status(namn, status, monkeypatch, tmp_path):
 
     kt.check_server_status(namn)
 
-    assert lg.get_server(namn)["status"] == status
+    server = lg.get_server(namn)
+    assert server is not None
+    assert server["status"] == status

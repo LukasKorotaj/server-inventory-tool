@@ -28,7 +28,6 @@ if __name__ == "__main__":
     parser.add_argument("--miljo", metavar="MILJO", choices=["dev", "test", "prod"])
     parser.add_argument(
         "--kontrollera",
-        nargs=1,
         help="Kontrollera en server",
     )
     parser.add_argument(

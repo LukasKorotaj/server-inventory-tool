@@ -140,7 +140,7 @@ def ta_bort():
 
     ser_names = []
     for s in servers:
-        ser_names.append(s["namn"])
+        ser_names.append((s["namn"], s["miljo"]))
 
     while True:
         to_del = input("Vilken server vill du ta bort? ('q' for att avbryta): ")
@@ -149,15 +149,18 @@ def ta_bort():
 
         to_del = to_del.lower().strip()
 
-        if to_del not in ser_names:
+        if to_del not in ser_names[0]:
             print(f"{to_del} finns inte!")
             continue
 
-        confirm = input(f'Vill du verkligen ta bort "{to_del}"? (y/N)')
+        # Checks if to_del is "prod" in 
+        # which case asks for confirmatin
+        if (to_del, "prod") in ser_names:
+            confirm = input(f'Vill du verkligen ta bort "{to_del}"? (y/N)')
 
-        if confirm.lower().strip() != "y":
-            print("Stoppar raderingen.")
-            return
+            if confirm.lower().strip() != "y":
+                print("Stoppar raderingen.")
+                return
 
         break
 

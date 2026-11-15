@@ -47,7 +47,7 @@ def check_server_status(namn):
 
     lg.update_server_status(namn, status=return_status)
 
-    return command_output.returncode
+    return 0 if return_status == "up" else 1
 
     # NOTE: I was thinking about capturing the final ping time
     # so that the timestamp is extra accurate but since i am only

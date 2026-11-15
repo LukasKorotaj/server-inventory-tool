@@ -4,7 +4,7 @@
 # and the `ping` command.
 # Exit code decides the status.
 #
-# Upon check "status" is updated to "UP" or "DOWN"
+# Upon check "status" is updated to "up" or "down"
 # "senast_kontrollerad" is updated to the current date and time
 # format: "YYYY-MM-DD HH:mm"
 
@@ -39,9 +39,9 @@ def check_server_status(namn):
 
     match command_output.returncode:
         case 0:
-            return_status = "UP"
+            return_status = "up"
         case 1 | 2:
-            return_status = "DOWN"
+            return_status = "down"
         case code:
             raise RuntimeError(f"Unexpected return code: {code}")
 

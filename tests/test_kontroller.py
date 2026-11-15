@@ -11,7 +11,7 @@ import lagring as lg
 # These have been tested in shell
 @pytest.mark.parametrize(
     ["namn", "status"],
-    [["web01", "UP"], ["db01", "UP"], ["test01", "DOWN"], ["dev01", "UP"]],
+    [["web01", "up"], ["db01", "up"], ["test01", "down"], ["dev01", "up"]],
 )
 def test_check_server_status(namn, status, monkeypatch, tmp_path):
     file = tmp_path / "test_server.json"

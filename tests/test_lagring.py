@@ -31,7 +31,7 @@ test_server_for_add = {
     "adress": "localhost",
     "miljo": "dev",
     "roll": "utvecklingsserver",
-    "status": "Unknown",
+    "status": "unknown",
     "senast_kontrollerad": "",
 }
 
@@ -50,7 +50,7 @@ def test_add_server(monkeypatch, tmp_path):
 
 @pytest.fixture
 def up_down():
-    return ["UP", "DOWN"]
+    return ["up", "down"]
 
 
 def test_update_server_status(up_down, monkeypatch, tmp_path):

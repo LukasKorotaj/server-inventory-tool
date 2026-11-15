@@ -17,9 +17,9 @@
 #
 # Namn            Adress          Status
 # ---------------------------------------------
-# web-prod-01     192.168.1.10    UP
-# db-primary      10.0.0.5        UP
-# auth-backup     172.16.0.4      DOWN
+# web-prod-01     192.168.1.10    up
+# db-primary      10.0.0.5        up
+# auth-backup     172.16.0.4      down
 #
 # Added this from lagring.py as this module
 # is the one that shuould be handling user input
@@ -28,7 +28,7 @@
 # "adress": str,
 # "miljo": ("dev" OR "test" OR "prod"),
 # "roll": str,
-# "status": ("UP" OR "DOWN" OR default="UNKNOWN"),
+# "status": ("up" OR "down" OR default="UNKNOWN"),
 # "senast_kontrollerad": str(datetime)
 #
 # If users imputs invalid "miljo" or "namn" already exists

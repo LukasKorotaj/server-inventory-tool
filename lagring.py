@@ -5,7 +5,7 @@
 # "adress": str,
 # "miljo": ("dev" OR "test" OR "prod"),
 # "roll": str,
-# "status": ("UP" OR "DOWN" OR default="UNKNOWN"),
+# "status": ("up" OR "down" OR default="unknown"),
 # "senast_kontrollerad": str(datetime)
 #
 # If users imputs invalid "miljo" or "namn" already exists
@@ -67,7 +67,7 @@ def get_current_time(csv_format: bool = False):
     if csv_format:
         return current_time.strftime("%Y-%m-%d_%H%M")
     else:
-        return current_time.strftime("%d-%m-%Y %H:%M")
+        return current_time.strftime("%Y-%m-%d %H:%M")
 
 
 def add_server(namn: str, adress: str, miljo: str, roll: str):
@@ -80,7 +80,7 @@ def add_server(namn: str, adress: str, miljo: str, roll: str):
         "adress": adress,
         "miljo": miljo,
         "roll": roll,
-        "status": "Unknown",
+        "status": "unknown",
         "senast_kontrollerad": "",
     }
 

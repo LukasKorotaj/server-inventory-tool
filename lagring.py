@@ -104,7 +104,6 @@ def get_server(namn, servers: list | None = None) -> dict | None:
         if server.get("namn") == namn:
             return server
 
-    # Raises RuntimeError as this should not be possible
     return None
 
 

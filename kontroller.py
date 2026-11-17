@@ -19,15 +19,18 @@ def check_webserver_status(namn, adress):
     # Explicit check (LSP crying)
     # Set the check to false because I don't
     # really care about the return object type
+    # Also, AI tools force -o /dev/null 
+    # while in the man pages, under --output 
+    # --out-null is stated as recommended.
     command_output = subprocess.run(
-        ["curl", "-w", "%{http_code}", "--max-time", "2", adress],
+        ["curl", "--out-null", "-w", "%{http_code}", "--max-time", "2", adress],
         check=False,
         capture_output=True,
     )
 
     # Assigns the last line containing the http exit 
     # code to return_code as an integer.
-    return_code = int(command_output.stdout.split(sep=b'\n')[-1])
+    return_code = int(command_output.stdout)
 
     # According to mozilla, anything starting with 
     # 2 is success

@@ -157,6 +157,60 @@ def export_csv():
 
     return 0
 
+def txt_summary(servers: list | None = None):
+    """Makes a string that can be exported alongside csv file. (Or by itself)"""
+
+    if servers is None:
+        servers = parse_servers_json()
+
+    str_list = []
+    af = lambda s: str_list.append(s + "\n")
+
+    af(f"{'MILJO':<8}{'UP':<8}{'DOWN':<8}{'UNKNOWN':<8}")
+    af(32 * "-")
+
+    total = {"up": 0, "down": 0, "unknown": 0}
+    dev = {"up": 0, "down": 0, "unknown": 0}
+    test = {"up": 0, "down": 0, "unknown": 0}
+    prod = {"up": 0, "down": 0, "unknown": 0}
+
+    for s in servers:
+        target = {}
+        match s["miljo"]:
+            case "test":
+                target = test
+            case "dev":
+                target = dev
+            case "prod":
+                target = prod
+            case what:
+                raise RuntimeError(f"Server has illegal miljo: {what}")
+
+        match s["status"]:
+            case "up":
+                target["up"] += 1
+                total["up"] += 1
+            case "down":
+                target["down"] += 1
+                total["down"] += 1
+            case "unknown":
+                target["unknown"] += 1
+                total["unknown"] += 1
+            case what:
+                raise RuntimeError(f"Server has illegal status: {what}")
+
+    af(f"{'dev':<8}{dev['up']:<8}{dev['down']:<8}{dev['unknown']:<8}")
+    af(f"{'test':<8}{test['up']:<8}{test['down']:<8}{test['unknown']:<8}")
+    af(f"{'prod':<8}{prod['up']:<8}{prod['down']:<8}{prod['unknown']:<8}")
+
+    af(32 * "-")
+    af(f"{'TOTAL':<8}{total['up']:<8}{total['down']:<8}{total['unknown']:<8}")
+
+    final_string = "".join(str_list)
+
+    return final_string
+
+
 
 def remove_server(to_del):
     servers = parse_servers_json()

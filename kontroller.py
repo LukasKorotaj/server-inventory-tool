@@ -36,8 +36,8 @@ def check_webserver_status(namn, adress):
         capture_output=True,
     )
 
-    # Assigns the last line containing the http exit 
-    # code to return_code as an integer.
+    # Assigns the http status code
+    # to return_code as an integer.
     return_code = int(command_output.stdout)
 
     # According to mozilla, anything starting with 

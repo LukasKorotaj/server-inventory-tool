@@ -13,6 +13,33 @@ import subprocess
 
 import lagring as lg
 
+def check_webserver_status(namn, adress):
+    """Check status of a webserver and update INVENTORY_DATAFIL."""
+
+    # Explicit check (LSP crying)
+    # Set the check to false because I don't
+    # really care about the return object type
+    command_output = subprocess.run(
+        ["curl", "-w", "%{http_code}", "--max-time", "2", adress],
+        check=False,
+        capture_output=True,
+    )
+
+    # Assigns the last line containing the http exit 
+    # code to return_code as an integer.
+    return_code = int(command_output.stdout.split(sep=b'\n')[-1])
+
+    # According to mozilla, anything starting with 
+    # 2 is success
+    if 200 <= return_code < 300:
+        return_status = "up"
+    else:
+        return_status = "down"
+
+    lg.update_server_status(namn, status=return_status)
+
+    return 0 if return_status == "up" else 1
+
 
 def check_server_status(namn):
     """Check status of server and update INVENTORY_DATAFIL."""
@@ -21,6 +48,10 @@ def check_server_status(namn):
         return None
 
     adress = server["adress"]
+
+    if server["roll"] == "webbserver":
+        return check_webserver_status(namn, adress)
+
 
     # runs: ping -c 3 {server_adress}
     # Explicit check (LSP crying)

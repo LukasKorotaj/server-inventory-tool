@@ -21,9 +21,17 @@ def check_webserver_status(namn, adress):
     # really care about the return object type
     # Also, AI tools force -o /dev/null 
     # while in the man pages, under --output 
-    # --out-null is stated as recommended.
+    # --out-null is right there.
+    #
+    # NOTE: I was curious as to 
+    # why --out-null wasn't recommended so 
+    # I checked when it came out. September 
+    # 2025 is the answer. That means 
+    # there is a risk that some LTS distros 
+    # are not on that version. So I changed 
+    # it to -o /dev/null.
     command_output = subprocess.run(
-        ["curl", "--out-null", "-w", "%{http_code}", "--max-time", "2", adress],
+        ["curl", "-o", "/dev/null", "-w", "%{http_code}", "--max-time", "2", adress],
         check=False,
         capture_output=True,
     )

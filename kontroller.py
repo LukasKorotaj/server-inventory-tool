@@ -31,7 +31,7 @@ def check_webserver_status(namn, adress):
     # are not on that version. So I changed 
     # it to -o /dev/null.
     command_output = subprocess.run(
-        ["curl", "-o", "/dev/null", "-w", "%{http_code}", "--max-time", "2", adress],
+        ["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "--max-time", "2", adress],
         check=False,
         capture_output=True,
     )

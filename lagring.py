@@ -169,7 +169,6 @@ def txt_summary(servers: list | None = None):
     af(f"{'MILJO':<8}{'UP':<8}{'DOWN':<8}{'UNKNOWN':<8}")
     af(32 * "-")
 
-    total = {"up": 0, "down": 0, "unknown": 0}
     dev = {"up": 0, "down": 0, "unknown": 0}
     test = {"up": 0, "down": 0, "unknown": 0}
     prod = {"up": 0, "down": 0, "unknown": 0}
@@ -189,13 +188,10 @@ def txt_summary(servers: list | None = None):
         match s["status"]:
             case "up":
                 target["up"] += 1
-                total["up"] += 1
             case "down":
                 target["down"] += 1
-                total["down"] += 1
             case "unknown":
                 target["unknown"] += 1
-                total["unknown"] += 1
             case what:
                 raise RuntimeError(f"Server has illegal status: {what}")
 
@@ -203,7 +199,15 @@ def txt_summary(servers: list | None = None):
     af(f"{'test':<8}{test['up']:<8}{test['down']:<8}{test['unknown']:<8}")
     af(f"{'prod':<8}{prod['up']:<8}{prod['down']:<8}{prod['unknown']:<8}")
 
+
     af(32 * "-")
+
+    total = {"up": 0, "down": 0, "unknown": 0}
+    for k in (dev, test, prod):
+        total["up"] += k["up"]
+        total["down"] += k["down"]
+        total["unknown"] += k["unknown"]
+
     af(f"{'TOTAL':<8}{total['up']:<8}{total['down']:<8}{total['unknown']:<8}")
 
     final_string = "".join(str_list)

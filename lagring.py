@@ -152,12 +152,13 @@ def export_csv():
         writer.writeheader()
         writer.writerows(servers)
 
-    print("\n\n\n")
+    print(txt_summary(servers))
+    print("\n")
     print(f"Rapporten finns i ./rapporter/{file_name}")
 
     return 0
 
-def txt_summary(servers: list | None = None):
+def txt_summary(servers: list | None = None) -> str:
     """Makes a string that can be exported alongside csv file. (Or by itself)"""
 
     if servers is None:
